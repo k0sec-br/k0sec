@@ -4,7 +4,7 @@ const COMMUNITY_LINKS = {
   social: "https://www.instagram.com/k0.sec",
   communityPolicy: "COMMUNITY_POLICY.md",
   codeOfConduct: "CODE_OF_CONDUCT.md",
-  contact: "mailto:contato@k0sec.org"
+  contact: "https://www.instagram.com/k0.sec"
 };
 
 const SUBTITLE_CONFIG = {
