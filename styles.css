@@ -102,62 +102,107 @@ p {
   border: 0;
 }
 
-.subtitle-engine {
+.ambient-subtitle-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  perspective: 900px;
   pointer-events: none;
+  transform-style: preserve-3d;
 }
 
-.subtitle-engine span {
+.ambient-subtitle {
   position: absolute;
-  max-width: min(74vw, 42rem);
-  color: rgba(245, 245, 245, 0.105);
+  left: var(--x);
+  top: var(--y);
+  max-width: min(44ch, 50vw);
+  color: rgba(245, 245, 245, 0.24);
   font-family: var(--font-mono);
-  font-size: clamp(0.72rem, 1.4vw, 1.05rem);
+  font-size: clamp(1rem, 2.2vw, 2.45rem);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.16;
   text-transform: uppercase;
-  text-shadow: 0 0 24px rgba(245, 245, 245, 0.08);
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.2),
+    0 0 28px rgba(255, 255, 255, 0.1);
+  opacity: calc(0.4 * var(--intensity, 1));
+  filter: blur(0.55px);
+  mix-blend-mode: screen;
+  transform:
+    translate3d(-50%, -50%, var(--z))
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    rotateZ(var(--rz))
+    scale(var(--size, 0.74));
+  transform-origin: center;
+  transition:
+    opacity var(--phrase-dissolve-duration, 1480ms) cubic-bezier(0.16, 1, 0.3, 1),
+    filter var(--phrase-dissolve-duration, 1480ms) cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow var(--phrase-dissolve-duration, 1480ms) ease-out;
+  will-change: transform, opacity, filter;
+}
+
+.ambient-subtitle::before {
+  position: absolute;
+  inset: -0.45em -0.7em;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08), transparent 68%);
+  filter: blur(16px);
+  opacity: 0.48;
+  content: "";
+  transition:
+    opacity var(--phrase-dissolve-duration, 1480ms) ease-out,
+    filter var(--phrase-dissolve-duration, 1480ms) ease-out;
+}
+
+.ambient-subtitle.is-drifting {
+  animation: ambient-drift var(--drift-duration, 8s) ease-in-out forwards;
+}
+
+.ambient-subtitle.is-disintegrating {
   opacity: 0;
-  filter: blur(0.2px);
-  animation: cinematic-subtitle 18s ease-in-out infinite;
+  filter: blur(5px);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.12),
+    0 0 18px rgba(255, 255, 255, 0.05);
 }
 
-.subtitle-engine span:nth-child(1) {
-  top: 18%;
-  left: 8%;
+.ambient-subtitle.is-disintegrating::before {
+  opacity: 0;
+  filter: blur(22px);
 }
 
-.subtitle-engine span:nth-child(2) {
-  top: 34%;
-  right: 10%;
-  animation-delay: -13s;
+.ambient-letter {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(7px);
+  transform: translate3d(0, 0.12em, -44px) scale(0.88);
+  transform-origin: center;
+  will-change: opacity, filter, transform;
 }
 
-.subtitle-engine span:nth-child(3) {
-  top: 58%;
-  left: 12%;
-  animation-delay: -8s;
+.ambient-letter.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 180ms ease,
+    filter 220ms ease,
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.subtitle-engine span:nth-child(4) {
-  right: 7%;
-  bottom: 20%;
-  animation-delay: -3s;
+.ambient-letter.is-space {
+  width: 0.62ch;
 }
 
-.subtitle-engine span:nth-child(5) {
-  top: 76%;
-  left: 42%;
-  animation-delay: -16s;
+.ambient-letter.is-punctuation {
+  opacity: 0.72;
 }
 
-.subtitle-engine span:nth-child(6) {
-  top: 11%;
-  right: 28%;
-  animation-delay: -6s;
+.ambient-subtitle.is-disintegrating .ambient-letter {
+  animation: ambient-dissolve var(--dur, 980ms) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
 }
 
 .site-header {
@@ -370,31 +415,12 @@ p {
   place-items: center;
 }
 
-.symbol-field::before,
-.symbol-field::after {
-  position: absolute;
-  width: 18rem;
-  height: 18rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  content: "";
-  animation: slow-drift 18s ease-in-out infinite;
-}
-
-.symbol-field::after {
-  width: 24rem;
-  height: 24rem;
-  border-color: rgba(118, 87, 255, 0.12);
-  animation-duration: 24s;
-  animation-direction: reverse;
-}
-
 .symbol-field img {
   position: relative;
   z-index: 1;
   width: min(92vw, 34rem);
-  opacity: 0.28;
+  opacity: 0.18;
   filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.07));
-  animation: symbol-breathe 11s ease-in-out infinite;
 }
 
 .data-line {
@@ -652,7 +678,6 @@ p {
   position: absolute;
   width: min(90vw, 34rem);
   opacity: 0.045;
-  animation: symbol-breathe 13s ease-in-out infinite;
 }
 
 .final-content {
@@ -716,44 +741,55 @@ p {
   transform: translateY(0);
 }
 
-@keyframes symbol-breathe {
-  0%,
-  100% {
-    transform: scale(1);
+@keyframes ambient-drift {
+  from {
+    transform:
+      translate3d(-50%, -50%, var(--z))
+      rotateX(var(--rx))
+      rotateY(var(--ry))
+      rotateZ(var(--rz))
+      scale(var(--size, 0.74));
   }
 
-  50% {
-    transform: scale(1.035);
+  to {
+    transform:
+      translate3d(calc(-50% + var(--float-x)), calc(-50% + var(--float-y)), var(--z-end))
+      rotateX(calc(var(--rx) + var(--drift-rx)))
+      rotateY(calc(var(--ry) + var(--drift-ry)))
+      rotateZ(calc(var(--rz) + var(--drift-rz)))
+      scale(var(--size, 0.74));
   }
 }
 
-@keyframes cinematic-subtitle {
-  0%,
-  100% {
-    opacity: 0;
-    transform: translateY(0.7rem);
-  }
-
-  14%,
-  38% {
+@keyframes ambient-dissolve {
+  0% {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
   }
 
-  54% {
-    opacity: 0;
-    transform: translateY(-0.4rem);
+  62% {
+    opacity: 0.72;
+    filter: blur(1px);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.2),
+      0 0 18px rgba(255, 255, 255, 0.08);
   }
-}
 
-@keyframes slow-drift {
-  0%,
+  88% {
+    opacity: 0.14;
+    filter: blur(3px);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+
   100% {
-    transform: rotate(0deg) scale(1);
-  }
-
-  50% {
-    transform: rotate(7deg) scale(1.08);
+    opacity: 0;
+    filter: blur(5.5px);
+    transform:
+      translate3d(var(--dx), var(--dy), var(--dz))
+      rotate(var(--rot))
+      scale(var(--scale));
   }
 }
 
@@ -849,15 +885,13 @@ p {
     order: -1;
   }
 
-  .symbol-field::before,
-  .symbol-field::after,
   .data-line {
     display: none;
   }
 
   .symbol-field img {
     width: min(72vw, 21rem);
-    opacity: 0.9;
+    opacity: 0.18;
   }
 
   .principles-grid,
@@ -906,15 +940,15 @@ p {
     font-size: clamp(2.65rem, 13vw, 3.6rem);
   }
 
-  .subtitle-engine span {
-    max-width: 17rem;
-    opacity: 0;
+  .ambient-subtitle-field {
+    opacity: 0.62;
   }
 
-  .subtitle-engine span:nth-child(2),
-  .subtitle-engine span:nth-child(4),
-  .subtitle-engine span:nth-child(6) {
-    display: none;
+  .ambient-subtitle {
+    max-width: min(32ch, 88vw);
+    font-size: clamp(1rem, 7vw, 2rem);
+    opacity: 0.22;
+    filter: blur(0.65px);
   }
 
   .button {

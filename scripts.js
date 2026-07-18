@@ -7,12 +7,446 @@ const COMMUNITY_LINKS = {
   contact: "mailto:contato@k0sec.org"
 };
 
+const SUBTITLE_CONFIG = {
+  maxLength: 64,
+  maxTotalDesktop: 5,
+  maxTotalMobile: 1,
+  maxTotalReduced: 1,
+  reducedIntensityCap: 0.5,
+  punctuationDelayMultiplier: 1.85,
+  spaceDelayMultiplier: 0.48,
+  cleanupPadding: 500,
+  typeDelay: {
+    desktop: 52,
+    mobile: 76,
+    reduced: 82
+  },
+  holdDelay: {
+    desktop: 1050,
+    mobile: 940,
+    reduced: 1350
+  },
+  dissolveDelay: {
+    desktop: 1480,
+    mobile: 1280,
+    reduced: 1800
+  },
+  ambient: {
+    firstDelay: 900,
+    secondDelayDesktop: 2300,
+    secondDelayMobile: 4300,
+    cadenceDesktop: 1500,
+    cadenceMobile: 3600,
+    cadenceReduced: 6200,
+    primaryIntensity: 0.72,
+    secondaryIntensity: 0.42,
+    reducedIntensity: 0.38
+  },
+  drift: {
+    durationMin: 7.2,
+    durationMax: 10.2,
+    normal: { x: 28, y: 18, rx: 3.4, ry: 5.5, rz: 2, zMin: 22, zMax: 72 },
+    reduced: { x: 8, y: 6, rx: 0.8, ry: 1.2, rz: 0.5, zMin: 8, zMax: 18 }
+  }
+};
+
+const SUBTITLE_PHRASES = [
+  "access granted for learning",
+  "authorized labs only",
+  "community signal found",
+  "beginner path enabled",
+  "logs no fundo da tela",
+  "defense mindset online",
+  "ethical scope required",
+  "stdin aberto para duvidas",
+  "learn explore defend",
+  "roadmap em construcao",
+  "writeups em preparacao",
+  "ctf queue warming up",
+  "shell aguardando estudo",
+  "security starts with context",
+  "responsibly"
+];
+
+const SUBTITLE_SLOTS = [
+  { x: 10, y: 16, z: -240, rx: 8, ry: -22, rz: -3, size: 0.82 },
+  { x: 18, y: 9, z: -360, rx: 4, ry: -14, rz: -1, size: 0.52 },
+  { x: 31, y: 18, z: -310, rx: 6, ry: -11, rz: 1, size: 0.66 },
+  { x: 49, y: 12, z: -430, rx: -2, ry: 6, rz: 0, size: 0.48 },
+  { x: 72, y: 16, z: -300, rx: -6, ry: 18, rz: 2, size: 0.72 },
+  { x: 91, y: 24, z: -260, rx: -5, ry: 24, rz: 3, size: 0.86 },
+  { x: 8, y: 35, z: -320, rx: 5, ry: -26, rz: -2, size: 0.58 },
+  { x: 13, y: 47, z: -280, rx: 4, ry: -18, rz: -1, size: 0.7 },
+  { x: 50, y: 43, z: -380, rx: 5, ry: -8, rz: 0, size: 0.58 },
+  { x: 87, y: 52, z: -285, rx: -8, ry: 16, rz: 1, size: 0.74 },
+  { x: 16, y: 74, z: -250, rx: 7, ry: 15, rz: 1, size: 0.88 },
+  { x: 42, y: 82, z: -340, rx: -3, ry: -8, rz: -2, size: 0.62 },
+  { x: 82, y: 79, z: -240, rx: -8, ry: -16, rz: -2, size: 0.9 },
+  { x: 58, y: 64, z: -410, rx: 3, ry: 9, rz: 1, size: 0.52 }
+];
+
+const subtitleState = {
+  compactViewport: window.matchMedia("(max-width: 700px)").matches,
+  motionIsReduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  lastPhrase: "",
+  lastSlot: null,
+  ambientTimer: null,
+  initialTimers: new Set(),
+  subtitleTimers: new Map()
+};
+
 document.documentElement.classList.add("has-js");
 
 const navToggle = document.querySelector(".nav-toggle");
 const navMenu = document.querySelector(".nav-menu");
 const linkedElements = document.querySelectorAll("[data-link]");
 const revealElements = document.querySelectorAll(".reveal");
+const subtitleField = document.querySelector(".ambient-subtitle-field");
+
+function randomBetween(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+function pickRandom(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function sanitizeSubtitleText(text) {
+  return String(text ?? "").replace(/\s+/g, " ").trim().slice(0, SUBTITLE_CONFIG.maxLength);
+}
+
+function valueByViewport(mobileValue, desktopValue) {
+  return subtitleState.compactViewport ? mobileValue : desktopValue;
+}
+
+function pickSubtitlePhrase() {
+  const options = SUBTITLE_PHRASES.filter((phrase) => phrase !== subtitleState.lastPhrase);
+
+  subtitleState.lastPhrase = pickRandom(options);
+  return subtitleState.lastPhrase;
+}
+
+function pickSubtitleSlot() {
+  const options = SUBTITLE_SLOTS.filter((slot) => slot !== subtitleState.lastSlot);
+
+  subtitleState.lastSlot = pickRandom(options);
+  return subtitleState.lastSlot;
+}
+
+function getDriftRange() {
+  return subtitleState.motionIsReduced ? SUBTITLE_CONFIG.drift.reduced : SUBTITLE_CONFIG.drift.normal;
+}
+
+function setSubtitleTransformVariables(element, slot) {
+  const driftRange = getDriftRange();
+
+  element.style.setProperty("--x", `${slot.x}%`);
+  element.style.setProperty("--y", `${slot.y}%`);
+  element.style.setProperty("--z", `${slot.z}px`);
+  element.style.setProperty("--z-end", `${slot.z + randomBetween(driftRange.zMin, driftRange.zMax)}px`);
+  element.style.setProperty("--rx", `${slot.rx}deg`);
+  element.style.setProperty("--ry", `${slot.ry}deg`);
+  element.style.setProperty("--rz", `${slot.rz}deg`);
+  element.style.setProperty("--float-x", `${randomBetween(-driftRange.x, driftRange.x)}px`);
+  element.style.setProperty("--float-y", `${randomBetween(-driftRange.y, driftRange.y)}px`);
+  element.style.setProperty("--drift-rx", `${randomBetween(-driftRange.rx, driftRange.rx)}deg`);
+  element.style.setProperty("--drift-ry", `${randomBetween(-driftRange.ry, driftRange.ry)}deg`);
+  element.style.setProperty("--drift-rz", `${randomBetween(-driftRange.rz, driftRange.rz)}deg`);
+  element.style.setProperty(
+    "--drift-duration",
+    `${randomBetween(SUBTITLE_CONFIG.drift.durationMin, SUBTITLE_CONFIG.drift.durationMax)}s`
+  );
+  element.style.setProperty("--size", (slot.size ?? 0.74).toFixed(2));
+}
+
+function setSubtitleIntensity(element, intensity) {
+  const finalIntensity = subtitleState.motionIsReduced
+    ? Math.min(intensity, SUBTITLE_CONFIG.reducedIntensityCap)
+    : intensity;
+
+  element.style.setProperty("--intensity", finalIntensity.toFixed(2));
+}
+
+function createSubtitleLetter(character) {
+  const letter = document.createElement("span");
+  const scatter = subtitleState.motionIsReduced ? 0.22 : subtitleState.compactViewport ? 0.42 : 1;
+
+  letter.className = "ambient-letter";
+
+  if (character === " " || character === "\u00a0") {
+    letter.classList.add("is-space");
+    letter.textContent = "\u00a0";
+  } else {
+    letter.textContent = character;
+  }
+
+  if (/[.,:+/-]/.test(character)) {
+    letter.classList.add("is-punctuation");
+  }
+
+  letter.style.setProperty("--dx", `${randomBetween(-7, 7) * scatter}px`);
+  letter.style.setProperty("--dy", `${randomBetween(-8, 7) * scatter}px`);
+  letter.style.setProperty("--dz", `${randomBetween(-18, 12) * scatter}px`);
+  letter.style.setProperty("--rot", `${randomBetween(-3.2, 3.2) * scatter}deg`);
+  letter.style.setProperty("--scale", randomBetween(0.965, 1.005).toFixed(3));
+  letter.style.setProperty("--dur", `${randomBetween(980, 1360)}ms`);
+  letter.style.setProperty("--delay", `${randomBetween(60, 180)}ms`);
+
+  return letter;
+}
+
+function createAmbientSubtitle(text, slot, intensity = 1) {
+  const phrase = document.createElement("div");
+
+  phrase.className = "ambient-subtitle";
+  setSubtitleTransformVariables(phrase, slot);
+  setSubtitleIntensity(phrase, intensity);
+
+  [...text].forEach((character) => {
+    phrase.appendChild(createSubtitleLetter(character));
+  });
+
+  return phrase;
+}
+
+function getSubtitleTotalLimit() {
+  if (subtitleState.motionIsReduced) return SUBTITLE_CONFIG.maxTotalReduced;
+
+  return subtitleState.compactViewport
+    ? SUBTITLE_CONFIG.maxTotalMobile
+    : SUBTITLE_CONFIG.maxTotalDesktop;
+}
+
+function getActiveSubtitles() {
+  if (!subtitleField) return [];
+
+  return [...subtitleField.querySelectorAll(".ambient-subtitle")];
+}
+
+function trackSubtitleTimer(phrase, timerId) {
+  if (!subtitleState.subtitleTimers.has(phrase)) {
+    subtitleState.subtitleTimers.set(phrase, new Set());
+  }
+
+  subtitleState.subtitleTimers.get(phrase).add(timerId);
+  return timerId;
+}
+
+function releaseSubtitleTimer(phrase, timerId) {
+  const timers = subtitleState.subtitleTimers.get(phrase);
+
+  if (!timers) return;
+
+  timers.delete(timerId);
+
+  if (!timers.size) {
+    subtitleState.subtitleTimers.delete(phrase);
+  }
+}
+
+function clearSubtitleTimers(phrase) {
+  const timers = subtitleState.subtitleTimers.get(phrase);
+
+  if (!timers) return;
+
+  timers.forEach((timerId) => window.clearTimeout(timerId));
+  subtitleState.subtitleTimers.delete(phrase);
+}
+
+function removeSubtitle(phrase) {
+  if (!phrase) return;
+
+  clearSubtitleTimers(phrase);
+  phrase.remove();
+}
+
+function enforceSubtitleCapacity({ force = false } = {}) {
+  const limit = getSubtitleTotalLimit();
+  const activeSubtitles = getActiveSubtitles();
+
+  if (activeSubtitles.length < limit) return true;
+  if (!force) return false;
+
+  while (getActiveSubtitles().length >= limit) {
+    removeSubtitle(getActiveSubtitles()[0]);
+  }
+
+  return true;
+}
+
+function getLetterDelay(character, baseDelay) {
+  const naturalJitter = randomBetween(0.84, 1.18);
+  const reducedMotionMultiplier = subtitleState.motionIsReduced ? 1.08 : 1;
+
+  if (character === " " || character === "\u00a0") {
+    return baseDelay * SUBTITLE_CONFIG.spaceDelayMultiplier * naturalJitter;
+  }
+
+  if (/[.,;:!?]/.test(character)) {
+    return baseDelay * SUBTITLE_CONFIG.punctuationDelayMultiplier * naturalJitter;
+  }
+
+  return baseDelay * naturalJitter * reducedMotionMultiplier;
+}
+
+function freezeSubtitleTransform(phrase) {
+  const currentTransform = window.getComputedStyle(phrase).transform;
+
+  if (currentTransform && currentTransform !== "none") {
+    phrase.style.transform = currentTransform;
+  }
+
+  phrase.classList.remove("is-drifting");
+}
+
+function beginSubtitleDissolve(phrase, dissolveDelay) {
+  if (!phrase?.isConnected || phrase.classList.contains("is-disintegrating")) return;
+
+  freezeSubtitleTransform(phrase);
+  phrase.classList.add("is-disintegrating");
+
+  const cleanupTimer = window.setTimeout(() => {
+    removeSubtitle(phrase);
+  }, dissolveDelay + SUBTITLE_CONFIG.cleanupPadding);
+
+  trackSubtitleTimer(phrase, cleanupTimer);
+}
+
+function revealSubtitleLetters(phrase, letters, typeDelay, onComplete) {
+  let index = 0;
+
+  const revealNextLetter = () => {
+    if (!phrase.isConnected) return;
+
+    if (index >= letters.length) {
+      onComplete();
+      return;
+    }
+
+    const letter = letters[index];
+
+    letter.classList.add("is-visible");
+    index += 1;
+
+    const delay = getLetterDelay(letter.textContent, typeDelay);
+    const timer = window.setTimeout(() => {
+      releaseSubtitleTimer(phrase, timer);
+      revealNextLetter();
+    }, delay);
+
+    trackSubtitleTimer(phrase, timer);
+  };
+
+  revealNextLetter();
+}
+
+function getAmbientTiming() {
+  return {
+    typeDelay: subtitleState.motionIsReduced
+      ? SUBTITLE_CONFIG.typeDelay.reduced
+      : valueByViewport(SUBTITLE_CONFIG.typeDelay.mobile, SUBTITLE_CONFIG.typeDelay.desktop),
+    holdDelay: subtitleState.motionIsReduced
+      ? SUBTITLE_CONFIG.holdDelay.reduced
+      : valueByViewport(SUBTITLE_CONFIG.holdDelay.mobile, SUBTITLE_CONFIG.holdDelay.desktop),
+    dissolveDelay: subtitleState.motionIsReduced
+      ? SUBTITLE_CONFIG.dissolveDelay.reduced
+      : valueByViewport(SUBTITLE_CONFIG.dissolveDelay.mobile, SUBTITLE_CONFIG.dissolveDelay.desktop),
+    spawnCadence: subtitleState.motionIsReduced
+      ? SUBTITLE_CONFIG.ambient.cadenceReduced
+      : valueByViewport(SUBTITLE_CONFIG.ambient.cadenceMobile, SUBTITLE_CONFIG.ambient.cadenceDesktop)
+  };
+}
+
+function getAmbientSlot() {
+  if (!subtitleState.compactViewport) return pickSubtitleSlot();
+
+  return {
+    ...pickSubtitleSlot(),
+    x: randomBetween(14, 86),
+    y: randomBetween(18, 84),
+    size: 0.62
+  };
+}
+
+function getAmbientIntensity(isSecondary) {
+  if (subtitleState.motionIsReduced) return SUBTITLE_CONFIG.ambient.reducedIntensity;
+
+  return isSecondary
+    ? SUBTITLE_CONFIG.ambient.secondaryIntensity
+    : SUBTITLE_CONFIG.ambient.primaryIntensity;
+}
+
+function launchSubtitle(text, options = {}) {
+  if (!subtitleField) return false;
+
+  const cleanText = sanitizeSubtitleText(text);
+
+  if (!cleanText) return false;
+  if (!enforceSubtitleCapacity({ force: options.force })) return false;
+
+  const timing = getAmbientTiming();
+  const phrase = createAmbientSubtitle(
+    cleanText,
+    options.slot ?? getAmbientSlot(),
+    options.intensity ?? SUBTITLE_CONFIG.ambient.primaryIntensity
+  );
+  const letters = [...phrase.querySelectorAll(".ambient-letter")];
+
+  phrase.style.setProperty("--phrase-dissolve-duration", `${timing.dissolveDelay}ms`);
+  subtitleField.appendChild(phrase);
+  requestAnimationFrame(() => phrase.classList.add("is-drifting"));
+
+  revealSubtitleLetters(phrase, letters, timing.typeDelay, () => {
+    const holdTimer = window.setTimeout(() => {
+      releaseSubtitleTimer(phrase, holdTimer);
+      beginSubtitleDissolve(phrase, timing.dissolveDelay);
+    }, timing.holdDelay);
+
+    trackSubtitleTimer(phrase, holdTimer);
+  });
+
+  return true;
+}
+
+function spawnAmbientPhrase(allowSecondary = false) {
+  const activeAmbient = getActiveSubtitles();
+  const limit = getSubtitleTotalLimit();
+
+  if (activeAmbient.length >= limit) return false;
+
+  return launchSubtitle(pickSubtitlePhrase(), {
+    slot: getAmbientSlot(),
+    intensity: getAmbientIntensity(allowSecondary || activeAmbient.length > 0)
+  });
+}
+
+function scheduleNextAmbientSubtitle(delay = getAmbientTiming().spawnCadence) {
+  subtitleState.ambientTimer = window.setTimeout(() => {
+    subtitleState.ambientTimer = null;
+    spawnAmbientPhrase(true);
+    scheduleNextAmbientSubtitle();
+  }, delay);
+}
+
+function startAmbientSubtitles() {
+  if (!subtitleField) return;
+
+  const firstTimer = window.setTimeout(() => {
+    subtitleState.initialTimers.delete(firstTimer);
+    spawnAmbientPhrase(false);
+  }, SUBTITLE_CONFIG.ambient.firstDelay);
+  const secondDelay = subtitleState.compactViewport
+    ? SUBTITLE_CONFIG.ambient.secondDelayMobile
+    : SUBTITLE_CONFIG.ambient.secondDelayDesktop;
+  const secondTimer = window.setTimeout(() => {
+    subtitleState.initialTimers.delete(secondTimer);
+    spawnAmbientPhrase(true);
+  }, secondDelay);
+
+  subtitleState.initialTimers.add(firstTimer);
+  subtitleState.initialTimers.add(secondTimer);
+  scheduleNextAmbientSubtitle();
+}
 
 linkedElements.forEach((element) => {
   const linkKey = element.dataset.link;
@@ -56,3 +490,4 @@ const revealObserver = new IntersectionObserver(
 );
 
 revealElements.forEach((element) => revealObserver.observe(element));
+startAmbientSubtitles();
