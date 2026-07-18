@@ -1,0 +1,25 @@
+{
+  "name": "k0sec-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page oficial da comunidade K0Sec.",
+  "scripts": {
+    "dev": "npx --yes http-server . -p 4173 -a 127.0.0.1",
+    "check:js": "node --check scripts.js",
+    "check:html": "npx --yes html-validate index.html",
+    "check:manifest": "node -e \"JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8'))\"",
+    "check:sitemap": "xmllint --noout sitemap.xml",
+    "validate": "npm run check:js && npm run check:html && npm run check:manifest && npm run check:sitemap"
+  },
+  "keywords": [
+    "k0sec",
+    "ciberseguranca",
+    "seguranca-digital",
+    "comunidade",
+    "ctf",
+    "red-team",
+    "blue-team"
+  ],
+  "author": "K0Sec",
+  "license": "UNLICENSED"
+}

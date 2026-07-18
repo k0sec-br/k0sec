@@ -20,11 +20,13 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
 }
 
 body {
   min-width: 320px;
   margin: 0;
+  overflow-x: hidden;
   color: var(--color-text);
   font-family: var(--font-body);
   background:
@@ -59,6 +61,7 @@ main,
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -356,6 +359,30 @@ p {
   align-items: center;
   min-height: 760px;
   padding: calc(var(--header-height) + 3.5rem) 0 3.5rem;
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --container: 960px;
+  }
+
+  .hero-section {
+    grid-template-columns: minmax(0, 0.95fr) minmax(17rem, 0.7fr);
+    gap: 2.3rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.45rem, 5.1vw, 4.2rem);
+  }
+
+  .symbol-field img {
+    width: min(36vw, 27rem);
+  }
+
+  .area-grid,
+  .activity-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .hero-copy {
@@ -877,8 +904,10 @@ p {
   }
 
   .hero-copy h1 {
-    max-width: none;
-    font-size: clamp(2.4rem, 9vw, 3.65rem);
+    max-width: 13ch;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: clamp(2.25rem, 7.2vw, 3.2rem);
   }
 
   .technical-row,
@@ -887,7 +916,7 @@ p {
   }
 
   .hero-symbol {
-    min-height: 17rem;
+    min-height: 13rem;
     order: -1;
   }
 
@@ -896,15 +925,18 @@ p {
   }
 
   .symbol-field img {
-    width: min(66vw, 17rem);
+    width: min(54vw, 13.5rem);
     opacity: 0.18;
   }
 
   .principles-grid,
-  .area-grid,
   .activity-grid,
   .beginner-section {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .area-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .beginner-section {
@@ -971,5 +1003,67 @@ p {
 
   .footer-links {
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 420px) {
+  .section-grid,
+  .content-section,
+  .site-footer {
+    width: min(100% - 1.5rem, var(--container));
+  }
+
+  .nav-shell {
+    width: min(100% - 1.5rem, var(--container));
+  }
+
+  .brand {
+    font-size: 0.98rem;
+  }
+
+  .technical-row {
+    gap: 0.45rem;
+  }
+
+  .technical-row span {
+    padding: 0.32rem 0.48rem;
+    font-size: 0.66rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(1.86rem, 9.2vw, 2.35rem);
+  }
+
+  .hero-copy p,
+  .section-heading p,
+  .beginner-copy p,
+  .project-panel p,
+  .ethics-content p,
+  .final-content p {
+    font-size: 0.94rem;
+  }
+
+  .section-heading h2,
+  .beginner-copy h2,
+  .project-panel h2,
+  .ethics-content h2,
+  .final-content h2 {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+  }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto;
+    padding-top: calc(var(--header-height) + 2rem);
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2rem, 7vw, 3.4rem);
+  }
+
+  .hero-symbol {
+    min-height: 18rem;
   }
 }
