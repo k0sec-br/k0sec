@@ -10,7 +10,7 @@ const COMMUNITY_LINKS = {
 const SUBTITLE_CONFIG = {
   maxLength: 64,
   maxTotalDesktop: 5,
-  maxTotalMobile: 1,
+  maxTotalMobile: 2,
   maxTotalReduced: 1,
   reducedIntensityCap: 0.5,
   punctuationDelayMultiplier: 1.85,
@@ -39,7 +39,7 @@ const SUBTITLE_CONFIG = {
     cadenceMobile: 3600,
     cadenceReduced: 6200,
     primaryIntensity: 0.72,
-    secondaryIntensity: 0.42,
+    secondaryIntensity: 0.5,
     reducedIntensity: 0.38
   },
   drift: {
