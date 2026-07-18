@@ -1,7 +1,7 @@
 const COMMUNITY_LINKS = {
-  discord: "https://discord.gg/EDITAR",
+  discord: "https://discord.gg/JSszTDPS7u",
   github: "https://github.com/jpachec0/k0sec",
-  social: "#editar-rede-social",
+  social: "https://www.instagram.com/k0.sec",
   communityPolicy: "#politica-de-comunidade",
   codeOfConduct: "#codigo-de-conduta",
   contact: "mailto:contato@k0sec.org"
