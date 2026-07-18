@@ -119,13 +119,14 @@ p {
   position: absolute;
   left: var(--x);
   top: var(--y);
-  max-width: min(44ch, 50vw);
+  max-width: none;
   color: rgba(245, 245, 245, 0.34);
   font-family: var(--font-mono);
   font-size: clamp(1.05rem, 2.15vw, 2.35rem);
   font-weight: 700;
   line-height: 1.16;
   text-transform: uppercase;
+  white-space: nowrap;
   text-shadow:
     0 0 6px rgba(255, 255, 255, 0.4),
     0 0 18px rgba(255, 255, 255, 0.24),
@@ -389,33 +390,12 @@ p {
   max-width: 48rem;
 }
 
-.technical-row,
 .section-kicker,
 .card-index,
 .card-icon,
 .principle-card span,
 .journey-list span {
   font-family: var(--font-mono);
-}
-
-.technical-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  margin-bottom: 1.6rem;
-  color: var(--color-muted);
-  font-size: 0.74rem;
-}
-
-.technical-row span,
-.section-kicker {
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.technical-row span {
-  padding: 0.38rem 0.62rem;
 }
 
 .hero-copy h1 {
@@ -502,12 +482,26 @@ p {
 }
 
 .section-kicker {
+  position: relative;
   display: inline-flex;
-  margin-bottom: 1rem;
-  padding: 0.34rem 0.65rem;
+  margin-bottom: 1.15rem;
+  padding: 0 0 0.72rem;
   color: var(--color-accent);
   font-size: 0.75rem;
   font-weight: 700;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.section-kicker::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 3.8rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+  content: "";
 }
 
 .section-heading h2,
@@ -910,7 +904,6 @@ p {
     font-size: clamp(2.25rem, 7.2vw, 3.2rem);
   }
 
-  .technical-row,
   .action-row {
     justify-content: center;
   }
@@ -983,7 +976,6 @@ p {
   }
 
   .ambient-subtitle {
-    max-width: min(32ch, 88vw);
     font-size: clamp(1.05rem, 7vw, 2.05rem);
     opacity: 0.48;
     filter: blur(0.35px);
@@ -1019,15 +1011,6 @@ p {
 
   .brand {
     font-size: 0.98rem;
-  }
-
-  .technical-row {
-    gap: 0.45rem;
-  }
-
-  .technical-row span {
-    padding: 0.32rem 0.48rem;
-    font-size: 0.66rem;
   }
 
   .hero-copy h1 {
