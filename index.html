@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K0Sec | Comunidade de cibersegurança</title>
+    <meta
+      name="description"
+      content="K0Sec é uma comunidade de cibersegurança para estudantes, iniciantes e pessoas interessadas em aprender segurança digital de forma prática, ética e colaborativa."
+    >
+    <meta name="theme-color" content="#050505">
+    <meta name="google-analytics-id" content="">
+    <meta property="og:title" content="K0Sec | Learn. Explore. Defend.">
+    <meta
+      property="og:description"
+      content="Comunidade independente de cibersegurança e educação tecnológica para quem quer aprender, explorar e defender com responsabilidade."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/social-preview.webp">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="K0Sec | Learn. Explore. Defend.">
+    <meta
+      name="twitter:description"
+      content="Aprenda cibersegurança em uma comunidade prática, ética e colaborativa."
+    >
+    <meta name="twitter:image" content="assets/social-preview.webp">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegação principal">
+        <a class="brand" href="#inicio" aria-label="K0Sec início">
+          <img src="assets/k0sec-symbol.webp" alt="" width="36" height="36">
+          <span>K0Sec</span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu">
+          <span class="sr-only">Abrir menu</span>
+          <span aria-hidden="true"></span>
+        </button>
+
+        <div class="nav-menu" id="primary-menu">
+          <a href="#inicio">Início</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#areas">Áreas</a>
+          <a href="#atividades">Atividades</a>
+          <a href="#comunidade">Comunidade</a>
+          <a class="button button-small" href="#" data-link="discord">Entrar no Discord</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="inicio">
+      <section class="hero-section section-grid" aria-labelledby="hero-title">
+        <div class="hero-copy reveal">
+          <div class="technical-row">
+            <span>K0SEC // COMMUNITY</span>
+            <span>STATUS: ONLINE</span>
+            <span>ACCESS: OPEN</span>
+          </div>
+          <h1 id="hero-title">Explore o desconhecido. Proteja o digital.</h1>
+          <p>
+            A K0Sec é uma comunidade criada para quem deseja aprender cibersegurança,
+            compartilhar conhecimento e evoluir junto, independentemente do nível de experiência.
+          </p>
+          <div class="action-row">
+            <a class="button button-primary" href="#" data-link="discord">Entrar na comunidade</a>
+            <a class="button button-secondary" href="#sobre">Conhecer a K0Sec</a>
+          </div>
+        </div>
+
+        <div class="hero-symbol reveal" aria-hidden="true">
+          <div class="symbol-field">
+            <span class="data-line data-line-one"></span>
+            <span class="data-line data-line-two"></span>
+            <span class="data-line data-line-three"></span>
+            <img src="assets/k0sec-symbol.webp" alt="" width="600" height="600">
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="sobre" aria-labelledby="about-title">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Sobre a K0Sec</span>
+          <h2 id="about-title">Conhecimento não deve ser inacessível.</h2>
+          <p>
+            A K0Sec nasceu com o objetivo de reunir estudantes e entusiastas de cibersegurança em
+            um ambiente acessível, responsável e colaborativo. A comunidade busca ajudar iniciantes
+            a encontrar um caminho de estudos, desenvolver projetos e explorar diferentes áreas da
+            segurança digital.
+          </p>
+        </div>
+
+        <div class="principles-grid">
+          <article class="principle-card reveal">
+            <span>01</span>
+            <h3>Aprender</h3>
+            <p>Conteúdos, trilhas de estudos, materiais e discussões para diferentes níveis de conhecimento.</p>
+          </article>
+          <article class="principle-card reveal">
+            <span>02</span>
+            <h3>Explorar</h3>
+            <p>Laboratórios, desafios, projetos, CTFs e experiências práticas em ambientes autorizados.</p>
+          </article>
+          <article class="principle-card reveal">
+            <span>03</span>
+            <h3>Compartilhar</h3>
+            <p>Uma comunidade onde membros podem tirar dúvidas, produzir materiais e evoluir juntos.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section section-muted" id="areas" aria-labelledby="areas-title">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Áreas de estudo</span>
+          <h2 id="areas-title">Encontre sua área.</h2>
+        </div>
+
+        <div class="area-grid">
+          <article class="area-card reveal">
+            <span class="card-index">01</span>
+            <span class="card-icon" aria-hidden="true">RT</span>
+            <h3>Red Team</h3>
+            <p>Estudo de técnicas ofensivas, testes de segurança e identificação de vulnerabilidades em ambientes autorizados.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">02</span>
+            <span class="card-icon" aria-hidden="true">BT</span>
+            <h3>Blue Team</h3>
+            <p>Defesa, monitoramento, resposta a incidentes e fortalecimento de sistemas contra ameaças reais.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">03</span>
+            <span class="card-icon" aria-hidden="true">NW</span>
+            <h3>Segurança de Redes</h3>
+            <p>Fundamentos de redes, análise de tráfego, segmentação e práticas para proteger infraestruturas.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">04</span>
+            <span class="card-icon" aria-hidden="true">LX</span>
+            <h3>Linux</h3>
+            <p>Uso do sistema, terminal, permissões, automação e base operacional para laboratórios de segurança.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">05</span>
+            <span class="card-icon" aria-hidden="true">AS</span>
+            <h3>AppSec</h3>
+            <p>Segurança em aplicações, revisão de código, boas práticas e vulnerabilidades comuns em software.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">06</span>
+            <span class="card-icon" aria-hidden="true">OI</span>
+            <h3>OSINT</h3>
+            <p>Coleta e análise de informações públicas com metodologia, contexto e responsabilidade.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">07</span>
+            <span class="card-icon" aria-hidden="true">CT</span>
+            <h3>CTF</h3>
+            <p>Desafios práticos para desenvolver raciocínio, pesquisa, exploração e documentação técnica.</p>
+          </article>
+          <article class="area-card reveal">
+            <span class="card-index">08</span>
+            <span class="card-icon" aria-hidden="true">PG</span>
+            <h3>Programação</h3>
+            <p>Scripts, automação, lógica, ferramentas e projetos úteis para quem estuda segurança digital.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="beginner-section content-section" id="comunidade" aria-labelledby="beginner-title">
+        <div class="beginner-copy reveal">
+          <span class="section-kicker">Iniciantes são bem-vindos</span>
+          <h2 id="beginner-title">Você não precisa saber por onde começar.</h2>
+          <p>
+            A K0Sec foi criada também para quem está dando os primeiros passos. A comunidade oferece
+            orientação, materiais introdutórios e contato com pessoas que estão percorrendo a mesma jornada.
+          </p>
+          <a class="button button-primary" href="#" data-link="discord">Começar agora</a>
+        </div>
+
+        <ol class="journey-list reveal">
+          <li><span>01</span>Entre na comunidade.</li>
+          <li><span>02</span>Escolha suas áreas de interesse.</li>
+          <li><span>03</span>Siga uma trilha de estudos.</li>
+          <li><span>04</span>Participe de projetos e desafios.</li>
+          <li><span>05</span>Compartilhe sua evolução.</li>
+        </ol>
+      </section>
+
+      <section class="content-section section-muted" id="atividades" aria-labelledby="activities-title">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Próximas atividades em preparação</span>
+          <h2 id="activities-title">Aprendizado além da teoria.</h2>
+          <p>Estamos construindo nossas primeiras experiências junto com a comunidade.</p>
+        </div>
+
+        <div class="activity-grid">
+          <span class="activity-chip reveal">Sessões introdutórias</span>
+          <span class="activity-chip reveal">Grupos de estudo</span>
+          <span class="activity-chip reveal">Laboratórios práticos</span>
+          <span class="activity-chip reveal">CTFs para iniciantes</span>
+          <span class="activity-chip reveal">Projetos no GitHub</span>
+          <span class="activity-chip reveal">Estudos para certificações</span>
+          <span class="activity-chip reveal">Palestras com convidados</span>
+          <span class="activity-chip reveal">Produção de writeups</span>
+        </div>
+      </section>
+
+      <section class="content-section projects-section" aria-labelledby="projects-title">
+        <div class="project-panel reveal">
+          <span class="section-kicker">Construção aberta</span>
+          <h2 id="projects-title">Construído de forma aberta.</h2>
+          <p>
+            A K0Sec pretende utilizar o GitHub para compartilhar roadmaps, materiais de estudo,
+            writeups, desafios, projetos colaborativos e documentação da comunidade.
+          </p>
+          <a class="button button-secondary" href="#" data-link="github">Ver no GitHub</a>
+        </div>
+      </section>
+
+      <section class="ethics-section content-section" aria-labelledby="ethics-title">
+        <div class="ethics-content reveal">
+          <span class="section-kicker">Ética</span>
+          <h2 id="ethics-title">Segurança exige responsabilidade.</h2>
+          <p>
+            A K0Sec é uma comunidade educacional. Todo conhecimento compartilhado deve ser utilizado
+            de maneira ética, legal e somente em sistemas próprios ou com autorização explícita.
+          </p>
+          <strong>Learn. Explore. Defend. Responsibly.</strong>
+        </div>
+      </section>
+
+      <section class="final-section content-section" aria-labelledby="final-title">
+        <img src="assets/k0sec-symbol.webp" alt="" width="520" height="520" aria-hidden="true">
+        <div class="final-content reveal">
+          <span class="section-kicker">K0SEC // ACCESS OPEN</span>
+          <h2 id="final-title">O próximo passo começa aqui.</h2>
+          <p>
+            Entre para a K0Sec, conheça outras pessoas interessadas em cibersegurança e participe da
+            construção de uma comunidade feita para aprender e evoluir.
+          </p>
+          <div class="action-row">
+            <a class="button button-primary" href="#" data-link="discord">Entrar no Discord</a>
+            <a class="button button-secondary" href="#" data-link="github">Acompanhar no GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <a class="brand" href="#inicio" aria-label="K0Sec início">
+          <img src="assets/k0sec-symbol.webp" alt="" width="34" height="34">
+          <span>K0Sec</span>
+        </a>
+        <p>K0Sec — Learn. Explore. Defend.</p>
+        <small>Comunidade independente de cibersegurança e educação tecnológica.</small>
+      </div>
+
+      <nav class="footer-links" aria-label="Links da comunidade">
+        <a href="#" data-link="discord">Discord</a>
+        <a href="#" data-link="github">GitHub</a>
+        <a href="#" data-link="social">Instagram ou LinkedIn</a>
+        <a href="#" data-link="communityPolicy">Política de comunidade</a>
+        <a href="#" data-link="codeOfConduct">Código de conduta</a>
+        <a href="#" data-link="contact">Contato</a>
+      </nav>
+    </footer>
+  </body>
+</html>
