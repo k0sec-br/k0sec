@@ -37,6 +37,25 @@ body.menu-open {
   overflow: hidden;
 }
 
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+  background-size: 5.5rem 5.5rem;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+  content: "";
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -81,6 +100,64 @@ p {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.subtitle-engine {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.subtitle-engine span {
+  position: absolute;
+  max-width: min(74vw, 42rem);
+  color: rgba(245, 245, 245, 0.105);
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.4vw, 1.05rem);
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(245, 245, 245, 0.08);
+  opacity: 0;
+  filter: blur(0.2px);
+  animation: cinematic-subtitle 18s ease-in-out infinite;
+}
+
+.subtitle-engine span:nth-child(1) {
+  top: 18%;
+  left: 8%;
+}
+
+.subtitle-engine span:nth-child(2) {
+  top: 34%;
+  right: 10%;
+  animation-delay: -13s;
+}
+
+.subtitle-engine span:nth-child(3) {
+  top: 58%;
+  left: 12%;
+  animation-delay: -8s;
+}
+
+.subtitle-engine span:nth-child(4) {
+  right: 7%;
+  bottom: 20%;
+  animation-delay: -3s;
+}
+
+.subtitle-engine span:nth-child(5) {
+  top: 76%;
+  left: 42%;
+  animation-delay: -16s;
+}
+
+.subtitle-engine span:nth-child(6) {
+  top: 11%;
+  right: 28%;
+  animation-delay: -6s;
 }
 
 .site-header {
@@ -315,8 +392,9 @@ p {
   position: relative;
   z-index: 1;
   width: min(92vw, 34rem);
-  filter: drop-shadow(0 0 36px rgba(255, 255, 255, 0.08));
-  animation: symbol-rotate 34s linear infinite;
+  opacity: 0.28;
+  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.07));
+  animation: symbol-breathe 11s ease-in-out infinite;
 }
 
 .data-line {
@@ -573,8 +651,8 @@ p {
 .final-section > img {
   position: absolute;
   width: min(90vw, 34rem);
-  opacity: 0.08;
-  animation: symbol-rotate 44s linear infinite reverse;
+  opacity: 0.045;
+  animation: symbol-breathe 13s ease-in-out infinite;
 }
 
 .final-content {
@@ -638,9 +716,33 @@ p {
   transform: translateY(0);
 }
 
-@keyframes symbol-rotate {
-  to {
-    transform: rotate(360deg);
+@keyframes symbol-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes cinematic-subtitle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0.7rem);
+  }
+
+  14%,
+  38% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  54% {
+    opacity: 0;
+    transform: translateY(-0.4rem);
   }
 }
 
@@ -802,6 +904,17 @@ p {
 
   .hero-copy h1 {
     font-size: clamp(2.65rem, 13vw, 3.6rem);
+  }
+
+  .subtitle-engine span {
+    max-width: 17rem;
+    opacity: 0;
+  }
+
+  .subtitle-engine span:nth-child(2),
+  .subtitle-engine span:nth-child(4),
+  .subtitle-engine span:nth-child(6) {
+    display: none;
   }
 
   .button {
