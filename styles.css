@@ -670,6 +670,42 @@ p {
     var(--color-card);
 }
 
+.repo-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.repo-links a {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 6rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.repo-links a:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(118, 87, 255, 0.45);
+}
+
+.repo-links span {
+  color: var(--color-text);
+  font-family: var(--font-title);
+  font-weight: 700;
+}
+
+.repo-links small {
+  color: var(--color-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .ethics-section {
   width: 100%;
   max-width: none;
@@ -954,6 +990,7 @@ p {
   .principles-grid,
   .area-grid,
   .activity-grid,
+  .repo-links,
   .beginner-section {
     grid-template-columns: 1fr;
   }

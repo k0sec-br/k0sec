@@ -1,6 +1,10 @@
 const COMMUNITY_LINKS = {
   discord: "https://discord.gg/JSszTDPS7u",
-  github: "https://github.com/jpachec0/k0sec",
+  github: "https://github.com/k0sec-br",
+  siteRepo: "https://github.com/k0sec-br/k0sec",
+  communityRepo: "https://github.com/k0sec-br/community",
+  learningPathsRepo: "https://github.com/k0sec-br/learning-paths",
+  labsRepo: "https://github.com/k0sec-br/labs",
   social: "https://www.instagram.com/k0.sec",
   communityPolicy: "COMMUNITY_POLICY.md",
   codeOfConduct: "CODE_OF_CONDUCT.md",
