@@ -24,7 +24,7 @@ Este documento resume a preparação de SEO do site da K0Sec.
 
 ## Antes de Publicar
 
-Confirme se o domínio final é `https://k0sec.org/`. Se outro domínio for usado, atualize:
+O domínio público atual é `https://k0sec.pages.dev/`. Se um domínio próprio for adotado no futuro, atualize:
 
 - `index.html`: `canonical`, `og:url`, `og:image`, `twitter:image` e JSON-LD.
 - `robots.txt`: URL do sitemap.
