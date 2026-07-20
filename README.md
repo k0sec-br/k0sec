@@ -47,6 +47,7 @@ Para alterações visuais, valide desktop, notebook, tablet e celular. As largur
 ├── COMMUNITY_POLICY.md           # Política de comunidade
 ├── CONTRIBUTING.md               # Guia de contribuição
 ├── SEO.md                        # Checklist de SEO e publicação
+├── package-lock.json             # Lockfile gerado pelo npm
 ├── package.json                  # Scripts locais de desenvolvimento e validação
 ├── humans.txt                    # Informações públicas do projeto
 ├── index.html                    # Landing page
@@ -91,10 +92,14 @@ Os principais links ficam em `scripts.js`, no objeto `COMMUNITY_LINKS`:
 ```js
 const COMMUNITY_LINKS = {
   discord: "https://discord.gg/JSszTDPS7u",
-  github: "https://github.com/jpachec0/k0sec",
+  github: "https://github.com/k0sec-br",
+  siteRepo: "https://github.com/k0sec-br/k0sec",
+  communityRepo: "https://github.com/k0sec-br/community",
+  learningPathsRepo: "https://github.com/k0sec-br/learning-paths",
+  labsRepo: "https://github.com/k0sec-br/labs",
   social: "https://www.instagram.com/k0.sec",
-  communityPolicy: "#politica-de-comunidade",
-  codeOfConduct: "#codigo-de-conduta",
+  communityPolicy: "COMMUNITY_POLICY.md",
+  codeOfConduct: "CODE_OF_CONDUCT.md",
   contact: "https://www.instagram.com/k0.sec"
 };
 ```

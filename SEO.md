@@ -54,6 +54,7 @@ Para melhorar autoridade ao longo do tempo:
 - Criar páginas ou posts específicos para CTF, Linux, redes, OSINT, AppSec, Red Team e Blue Team.
 - Conseguir links naturais de parceiros, eventos, escolas, faculdades e comunidades.
 - Manter o Discord e Instagram apontando para o domínio oficial.
+- Manter os repositórios públicos da organização `k0sec-br` conectados ao site oficial.
 - Atualizar o sitemap quando novas páginas forem criadas.
 - Solicitar indexação no Google Search Console após o deploy.
 
