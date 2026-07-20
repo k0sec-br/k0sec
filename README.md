@@ -130,4 +130,4 @@ O projeto pode ser publicado em qualquer hospedagem estática, como GitHub Pages
 
 O workflow `.github/workflows/validate.yml` valida HTML, JavaScript, manifest e sitemap em pushes e pull requests.
 
-Antes de publicar, confira se o domínio final é `https://k0sec.org/`. Se outro domínio for usado, atualize os metadados listados em [SEO.md](SEO.md).
+Antes de publicar, confira se o domínio final continua sendo `https://k0sec.pages.dev/`. Se um domínio próprio for adotado no futuro, atualize os metadados listados em [SEO.md](SEO.md).
